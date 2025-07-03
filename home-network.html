@@ -1,0 +1,176 @@
+<h1 id="home-network-dokumentation">Home Network Dokumentation</h1>
+<h2 id="überblick">Überblick</h2>
+<p>Diese Dokumentation beschreibt den Aufbau und die Konfiguration des
+Home-Netzwerks mit AVM Fritz!-Komponenten.</p>
+<h2 id="verfügbare-komponenten">Verfügbare Komponenten</h2>
+<ul>
+<li>1x Fritz!Box 5590 Fiber (Hauptrouter)</li>
+<li>1x Fritz! Repeater 6000 (Access Point)</li>
+<li>3x Fritz! Powerline 1220 (PowerLine-Adapter)</li>
+</ul>
+<h2 id="netzwerk-diagramm">Netzwerk-Diagramm</h2>
+<pre class="mermaid"><code>graph TB
+    Internet[🌐 Internet&lt;br/&gt;Glasfaser] --&gt; FB[Fritz!Box 5590 Fiber&lt;br/&gt;Kellergeschoss&lt;br/&gt;Router + WiFi]
+
+    FB --&gt; PL1[Fritz!Powerline 1220 #1&lt;br/&gt;Keller]
+    PL1 -.-&gt;|PowerLine über&lt;br/&gt;Stromnetz| PL2[Fritz!Powerline 1220 #2&lt;br/&gt;Erdgeschoss]
+    PL2 --&gt; REP[Fritz!Repeater 6000&lt;br/&gt;Erdgeschoss&lt;br/&gt;Access Point + WiFi]
+
+    FB --&gt; KellerWiFi[📱💻 Kellergeräte&lt;br/&gt;WiFi-Clients]
+    REP --&gt; ErdgeschossWiFi[📱💻 Erdgeschoss Geräte&lt;br/&gt;WiFi-Clients]
+
+    PL3[Fritz!Powerline 1220 #3&lt;br/&gt;Reserve für Erweiterungen]
+
+    classDef router fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
+    classDef powerline fill:#fff3e0,stroke:#ff8f00,stroke-width:2px
+    classDef devices fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef internet fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
+    classDef reserve fill:#fafafa,stroke:#757575,stroke-width:2px
+
+    class FB,REP router
+    class PL1,PL2 powerline
+    class KellerWiFi,ErdgeschossWiFi devices
+    class Internet internet
+    class PL3 reserve</code></pre>
+<h2 id="ascii-diagramm-für-lokale-ansicht">ASCII-Diagramm (für lokale
+Ansicht)</h2>
+<pre><code>┌─────────────────────────────────────────────────────────────────┐
+│                         ERDGESCHOSS                             │
+│                                                                 │
+│  ┌─────────────────────┐     ┌─────────────────────────────────┐ │
+│  │   Fritz!Powerline   │────▶│     Fritz!Repeater 6000        │ │
+│  │      1220 #2        │ LAN │      (Access Point)            │ │
+│  │                     │     │                                 │ │
+│  └─────────────────────┘     └─────────────────────────────────┘ │
+│            │                                   │                 │
+│            │                                   │                 │
+│            │ PowerLine                         │ WiFi            │
+│            │ über                              │                 │
+│            │ Stromnetz                         ▼                 │
+│            │                         📱💻📱 (Smartphones,       │
+│            │                              Laptops, etc.)        │
+└────────────┼─────────────────────────────────────────────────────┘
+             │
+             │ PowerLine-Verbindung
+             │ über Stromleitungen
+             │
+┌────────────┼─────────────────────────────────────────────────────┐
+│            │                 KELLERGESCHOSS                      │
+│            │                                                     │
+│            ▼                                                     │
+│  ┌─────────────────────┐     ┌─────────────────────────────────┐ │
+│  │   Fritz!Powerline   │────▶│     Fritz!Box 5590 Fiber       │ │
+│  │      1220 #1        │ LAN │        (Hauptrouter)           │ │
+│  │                     │     │                                 │ │
+│  └─────────────────────┘     └─────────────────────────────────┘ │
+│                                            │                     │
+│                                            │                     │
+│                                            │ Glasfaser           │
+│                                            ▼                     │
+│                                    🌐 Internet                   │
+│                                                                  │
+│                                WiFi für Kellergeschoss ──────────┤
+│                                            │                     │
+│                                            ▼                     │
+│                                    📱💻📱 (Kellergeräte)        │
+└──────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│                           RESERVE                               │
+│                                                                 │
+│              ┌─────────────────────────────────────┐            │
+│              │        Fritz!Powerline 1220 #3     │            │
+│              │         (für Erweiterungen)        │            │
+│              └─────────────────────────────────────┘            │
+└─────────────────────────────────────────────────────────────────┘</code></pre>
+<h2 id="physische-aufstellung">Physische Aufstellung</h2>
+<h3 id="kellergeschoss">Kellergeschoss</h3>
+<ul>
+<li><strong>Fritz!Box 5590 Fiber</strong>
+<ul>
+<li>Standort: Kellergeschoss (Glasfaseranschluss)</li>
+<li>Funktion: Hauptrouter, DHCP-Server, WiFi für Keller</li>
+<li>Anschlüsse: Glasfaser (Internet), LAN zu PowerLine</li>
+</ul></li>
+</ul>
+<h3 id="erdgeschoss">Erdgeschoss</h3>
+<ul>
+<li><strong>Fritz!Repeater 6000</strong>
+<ul>
+<li>Standort: Erdgeschoss</li>
+<li>Funktion: Access Point, WiFi für Erdgeschoss</li>
+<li>Verbindung: PowerLine (LAN), nicht WiFi!</li>
+</ul></li>
+</ul>
+<h3 id="powerline-verbindung">PowerLine-Verbindung</h3>
+<ul>
+<li><strong>Fritz!Powerline 1220 #1</strong>: Keller, an Fritz!Box
+angeschlossen</li>
+<li><strong>Fritz!Powerline 1220 #2</strong>: Erdgeschoss, an
+Fritz!Repeater angeschlossen</li>
+<li><strong>Fritz!Powerline 1220 #3</strong>: Reserve für
+Erweiterungen</li>
+</ul>
+<h2 id="konfiguration">Konfiguration</h2>
+<h3 id="fritzbox-5590-fiber-keller">Fritz!Box 5590 Fiber (Keller)</h3>
+<ul>
+<li><strong>Betriebsart</strong>: Router-Modus</li>
+<li><strong>Internet</strong>: Glasfaser-Anschluss</li>
+<li><strong>DHCP</strong>: Aktiviert (IP-Bereich:
+192.168.178.1-254)</li>
+<li><strong>WiFi</strong>: Aktiviert für Kellergeschoss</li>
+<li><strong>LAN</strong>: Port 1 für PowerLine-Adapter</li>
+</ul>
+<h3 id="fritzrepeater-6000-erdgeschoss">Fritz!Repeater 6000
+(Erdgeschoss)</h3>
+<ul>
+<li><strong>Betriebsart</strong>: Access Point-Modus (NICHT
+Repeater-Modus!)</li>
+<li><strong>Verbindung</strong>: LAN über PowerLine (nicht WiFi)</li>
+<li><strong>WiFi</strong>: Aktiviert für Erdgeschoss</li>
+<li><strong>SSID</strong>: Gleiche wie Fritz!Box für nahtloses
+Roaming</li>
+<li><strong>Passwort</strong>: Gleiche wie Fritz!Box</li>
+</ul>
+<h3 id="powerline-konfiguration">PowerLine-Konfiguration</h3>
+<ul>
+<li><strong>Verschlüsselung</strong>: Aktiviert (AES 128-Bit)</li>
+<li><strong>Netzwerk</strong>: Beide Adapter im gleichen
+PowerLine-Netzwerk</li>
+<li><strong>Geschwindigkeit</strong>: Bis zu 1.200 Mbit/s</li>
+</ul>
+<h2 id="wichtige-anforderungen">Wichtige Anforderungen</h2>
+<p>✅ <strong>Fritz!Box und Fritz!Repeater sind per PowerLine verbunden
+(nicht WiFi)</strong> ✅ <strong>Fritz!Repeater fungiert als Access
+Point und stellt WiFi bereit</strong> ✅ <strong>Ausreichend Steckdosen
+an beiden Standorten vorhanden</strong></p>
+<h2 id="vorteile-dieser-lösung">Vorteile dieser Lösung</h2>
+<ul>
+<li><strong>Stabile Verbindung</strong>: PowerLine ist zuverlässiger als
+WiFi-Repeating</li>
+<li><strong>Optimale Bandbreite</strong>: Kein Bandbreitenverlust durch
+WiFi-Repeating</li>
+<li><strong>Nahtloses Roaming</strong>: Automatischer Wechsel zwischen
+Access Points</li>
+<li><strong>Erweiterbar</strong>: Dritte PowerLine-Einheit für weitere
+Geschosse/Räume</li>
+</ul>
+<h2 id="erweitungsmöglichkeiten">Erweitungsmöglichkeiten</h2>
+<ul>
+<li><strong>Zusätzliche Geschosse</strong>: Fritz!Powerline 1220 #3 für
+weiteren Access Point</li>
+<li><strong>Mehr LAN-Ports</strong>: Switch an PowerLine-Adapter
+anschließen</li>
+<li><strong>Mesh-Erweiterung</strong>: Weitere Fritz!-Geräte für größere
+Abdeckung</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<ul>
+<li><strong>Keine PowerLine-Verbindung</strong>: Adapter in verschiedene
+Stromkreise stecken</li>
+<li><strong>Schwache WiFi-Signale</strong>: Position der Geräte
+optimieren</li>
+<li><strong>Verbindungsprobleme</strong>: Firmware-Updates prüfen</li>
+<li><strong>Geschwindigkeitsprobleme</strong>: PowerLine-Verschlüsselung
+überprüfen</li>
+</ul>
