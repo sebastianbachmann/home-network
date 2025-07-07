@@ -22,29 +22,29 @@ Diese Spezifikation beschreibt den erweiterten Aufbau des Home-Netzwerks mit AVM
 ```mermaid
 graph TB
     Internet[🌐 Internet<br/>Glasfaser] --> FB[Fritz!Box 5590 Fiber<br/>Kellergeschoss<br/>Router<br/>❌ KEIN WiFi]
-    
+
     FB --> PL1[Fritz!Powerline 1220 #1<br/>Keller]
     PL1 -.->|PowerLine über<br/>Stromnetz| PL2[Fritz!Powerline 1220 #2<br/>Erdgeschoss]
     PL2 --> Switch1[LAN Switch<br/>Erdgeschoss]
     Switch1 --> REP[Fritz!Repeater 6000<br/>Erdgeschoss<br/>Access Point + WiFi]
     Switch1 --> SmartTV[Samsung SmartTV<br/>Erdgeschoss]
     Switch1 --> AppleTV[Apple TV 4K<br/>Erdgeschoss]
-    
+
     PL1 -.->|PowerLine über<br/>Stromnetz| PL3[Fritz!Powerline 1220 #3<br/>2. Zwischengeschoss<br/>Gästezimmer/Büro]
-    
+
     REP -.->|WiFi Mesh| MeshRep[Fritz!Repeater<br/>1. Obergeschoss<br/>Büro]
-    
+
     REP --> ErdgeschossWiFi[📱💻 Erdgeschoss<br/>WiFi-Clients]
     MeshRep --> ObergeschossWiFi[📱💻 1. Obergeschoss<br/>WiFi-Clients]
     PL3 --> ZwischengeschossLAN[💻 2. Zwischengeschoss<br/>LAN-Clients]
-    
+
     classDef router fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
     classDef powerline fill:#fff3e0,stroke:#ff8f00,stroke-width:2px
     classDef devices fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
     classDef internet fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
     classDef switch fill:#fff8e1,stroke:#f57c00,stroke-width:2px
     classDef entertainment fill:#fce4ec,stroke:#c2185b,stroke-width:2px
-    
+
     class FB,REP,MeshRep router
     class PL1,PL2,PL3 powerline
     class ErdgeschossWiFi,ObergeschossWiFi,ZwischengeschossLAN devices
@@ -226,10 +226,15 @@ graph TB
 ## Wichtige Anforderungen (Status)
 
 ✅ **Fritz!Box und Fritz!Repeater per PowerLine verbunden**
+
 ✅ **Fritz!Box WiFi deaktiviert**
+
 ✅ **Fritz!Repeater 6000 als Access Point konfiguriert**
+
 ✅ **SmartTV und Apple TV per LAN eingebunden**
+
 ✅ **Büro-Fritz!Repeater per WiFi Mesh verbunden**
+
 ✅ **PowerLine im 2. Zwischengeschoss für Büro**
 
 ## Vorteile dieser Lösung
