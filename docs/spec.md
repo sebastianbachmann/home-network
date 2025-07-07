@@ -6,7 +6,7 @@ Diese Spezifikation beschreibt den erweiterten Aufbau des Home-Netzwerks mit AVM
 ## Verfügbare Komponenten
 - 1x Fritz!Box 5590 Fiber (Hauptrouter)
 - 1x Fritz! Repeater 6000 (Access Point)
-- 3x Fritz! Powerline 1220 (PowerLine-Adapter)
+- 5x Fritz! Powerline 1220 (PowerLine-Adapter)
 
 ## Gebäude-Struktur
 1. **Kellergeschoss** - Glasfaseranschluss
@@ -22,34 +22,34 @@ Diese Spezifikation beschreibt den erweiterten Aufbau des Home-Netzwerks mit AVM
 ```mermaid
 graph TB
     Internet[🌐 Internet<br/>Glasfaser] --> FB[Fritz!Box 5590 Fiber<br/>Kellergeschoss<br/>Router<br/>❌ KEIN WiFi]
-
+    
     FB --> PL1[Fritz!Powerline 1220 #1<br/>Keller]
     PL1 -.->|PowerLine über<br/>Stromnetz| PL2[Fritz!Powerline 1220 #2<br/>Erdgeschoss]
-    PL2 --> Switch1[LAN Switch<br/>Erdgeschoss]
-    Switch1 --> REP[Fritz!Repeater 6000<br/>Erdgeschoss<br/>Access Point + WiFi]
-    Switch1 --> SmartTV[Samsung SmartTV<br/>Erdgeschoss]
-    Switch1 --> AppleTV[Apple TV 4K<br/>Erdgeschoss]
-
-    PL1 -.->|PowerLine über<br/>Stromnetz| PL3[Fritz!Powerline 1220 #3<br/>2. Zwischengeschoss<br/>Gästezimmer/Büro]
-
+    PL2 --> REP[Fritz!Repeater 6000<br/>Erdgeschoss<br/>Access Point + WiFi]
+    
+    PL1 -.->|PowerLine über<br/>Stromnetz| PL3[Fritz!Powerline 1220 #3<br/>Erdgeschoss TV-Geräte]
+    PL3 --> SmartTV[Samsung SmartTV<br/>Erdgeschoss]
+    PL3 --> AppleTV[Apple TV 4K<br/>Erdgeschoss]
+    
+    PL1 -.->|PowerLine über<br/>Stromnetz| PL4[Fritz!Powerline 1220 #4<br/>2. Zwischengeschoss<br/>Gästezimmer/Büro]
+    PL1 -.->|PowerLine über<br/>Stromnetz| PL5[Fritz!Powerline 1220 #5<br/>Reserve]
+    
     REP -.->|WiFi Mesh| MeshRep[Fritz!Repeater<br/>1. Obergeschoss<br/>Büro]
-
+    
     REP --> ErdgeschossWiFi[📱💻 Erdgeschoss<br/>WiFi-Clients]
     MeshRep --> ObergeschossWiFi[📱💻 1. Obergeschoss<br/>WiFi-Clients]
-    PL3 --> ZwischengeschossLAN[💻 2. Zwischengeschoss<br/>LAN-Clients]
-
+    PL4 --> ZwischengeschossLAN[💻 2. Zwischengeschoss<br/>LAN-Clients]
+    
     classDef router fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
     classDef powerline fill:#fff3e0,stroke:#ff8f00,stroke-width:2px
     classDef devices fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
     classDef internet fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
-    classDef switch fill:#fff8e1,stroke:#f57c00,stroke-width:2px
     classDef entertainment fill:#fce4ec,stroke:#c2185b,stroke-width:2px
-
+    
     class FB,REP,MeshRep router
-    class PL1,PL2,PL3 powerline
+    class PL1,PL2,PL3,PL4,PL5 powerline
     class ErdgeschossWiFi,ObergeschossWiFi,ZwischengeschossLAN devices
     class Internet internet
-    class Switch1 switch
     class SmartTV,AppleTV entertainment
 ```
 
@@ -66,7 +66,7 @@ graph TB
 │                   Gästezimmer, Büro                                          │
 │                                                                              │
 │  ┌─────────────────────────────────────────────────────────────────────────┐ │
-│  │                Fritz!Powerline 1220 #3                                 │ │
+│  │                Fritz!Powerline 1220 #4                                 │ │
 │  │              💻 LAN für Büro/Gästezimmer                               │ │
 │  └─────────────────────────────────────────────────────────────────────────┘ │
 │                                    │                                        │
@@ -92,22 +92,18 @@ graph TB
 ┌────────────────────────────────────┼────────────────────────────────────────┐
 │                   ERDGESCHOSS      │                                        │
 │                                    │                                        │
-│  ┌─────────────────────┐  ┌─────────┴─────────────────────────────────────┐ │
-│  │ Fritz!Powerline     │  │        LAN Switch                             │ │
-│  │    1220 #2          │──┤                                               │ │
-│  └─────────────────────┘  │  ┌─────────────────────────────────────────┐  │ │
-│                           │  │     Fritz!Repeater 6000                │  │ │
-│                           │  │     (Access Point + WiFi)               │  │ │
-│                           │  └─────────────────────────────────────────┘  │ │
-│                           │                                               │ │
-│                           │  ┌─────────────────────────────────────────┐  │ │
-│                           │  │        Samsung SmartTV                   │  │ │
-│                           │  └─────────────────────────────────────────┘  │ │
-│                           │                                               │ │
-│                           │  ┌─────────────────────────────────────────┐  │ │
-│                           │  │        Apple TV 4K                       │  │ │
-│                           │  └─────────────────────────────────────────┘  │ │
-│                           └───────────────────────────────────────────────┘ │
+│  ┌─────────────────────────────────┴───────────────────────────────────────┐ │
+│  │              Fritz!Powerline 1220 #2                                   │ │
+│  │                        │                                                │ │
+│  │                        └──→ Fritz!Repeater 6000 (Access Point + WiFi)  │ │
+│  └─────────────────────────────────────────────────────────────────────────┘ │
+│                                                                              │
+│  ┌─────────────────────────────────────────────────────────────────────────┐ │
+│  │              Fritz!Powerline 1220 #3 (TV-Geräte)                      │ │
+│  │                                                                         │ │
+│  │  Port 1 ──→ Samsung SmartTV                                            │ │
+│  │  Port 2 ──→ Apple TV 4K                                                │ │
+│  └─────────────────────────────────────────────────────────────────────────┘ │
 │                                                  │                          │
 │                                                  │ WiFi                     │
 │                                                  ▼                          │
@@ -134,6 +130,15 @@ graph TB
 │                                                      ▼                      │
 │                                              🌐 Internet                    │
 └──────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                           RESERVE                                           │
+│                                                                              │
+│              ┌─────────────────────────────────────────────┐                │
+│              │        Fritz!Powerline 1220 #5             │                │
+│              │         (für weitere Erweiterungen)        │                │
+│              └─────────────────────────────────────────────┘                │
+└──────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ## Detaillierte Konfiguration
@@ -144,32 +149,30 @@ graph TB
 - **Internet**: Glasfaser-Anschluss
 - **DHCP**: Aktiviert (IP-Bereich: 192.168.178.1-254)
 - **WiFi**: ❌ **DEAKTIVIERT** (wichtige Anforderung!)
+- **Mesh**: Aktiviert für Fritz!Repeater 6000 Verbindung
 - **LAN**: Port 1 für Fritz!Powerline 1220 #1
 - **Funktion**: Hauptrouter, Internet-Gateway, DHCP-Server
 
 ### Erdgeschoss
 #### Fritz!Powerline 1220 #2
 - **Verbindung**: PowerLine zum Keller
-- **LAN-Ausgang**: An LAN-Switch angeschlossen
+- **LAN-Ausgang**: Fritz!Repeater 6000
 
-#### LAN-Switch (zusätzlich benötigt)
-- **Anschlüsse**: 4-5 Ports minimum
-- **Verbindungen**:
-  - Fritz!Repeater 6000
-  - Samsung SmartTV
-  - Apple TV 4K
-  - Evtl. weitere Geräte
+#### Fritz!Powerline 1220 #3 (TV-Geräte)
+- **Verbindung**: PowerLine-Netzwerk
+- **LAN-Port 1**: Samsung SmartTV
+- **LAN-Port 2**: Apple TV 4K
 
 #### Fritz!Repeater 6000
 - **Betriebsart**: Access Point-Modus
-- **Verbindung**: LAN über Switch (PowerLine-Kette)
+- **Verbindung**: LAN über PowerLine (Port 1)
 - **WiFi**: Aktiviert für Erdgeschoss
 - **SSID**: "HomeNetwork" (Beispiel)
 - **Mesh**: Aktiviert für Verbindung zu anderen Fritz!-Geräten
 
 #### Entertainment-Geräte
-- **Samsung SmartTV**: LAN-Verbindung über Switch
-- **Apple TV 4K**: LAN-Verbindung über Switch
+- **Samsung SmartTV**: LAN-Verbindung (PowerLine #3 Port 1)
+- **Apple TV 4K**: LAN-Verbindung (PowerLine #3 Port 2)
 
 ### 1. Obergeschoss (Büro)
 #### Fritz!Repeater (vorhandener)
@@ -180,10 +183,16 @@ graph TB
 - **Abdeckung**: Schlafen, Kinderzimmer, Büro, Dusche
 
 ### 2. Zwischengeschoss (Gästezimmer/Büro)
-#### Fritz!Powerline 1220 #3
+#### Fritz!Powerline 1220 #4
 - **Verbindung**: PowerLine-Netzwerk
 - **LAN-Ausgang**: Für Computer/Laptops im Büro
 - **Funktion**: Kabelgebundenes Internet für Arbeitsplätze
+
+### Reserve
+#### Fritz!Powerline 1220 #5
+- **Status**: Nicht verwendet
+- **Zweck**: Für weitere Erweiterungen verfügbar
+- **Mögliche Nutzung**: Zusätzliche Stockwerke, Garten, Garage
 
 ## Netzwerk-Topologie
 
@@ -193,6 +202,7 @@ graph TB
 - **Fritz!Repeater (1. OG)**: 192.168.178.3
 - **Samsung SmartTV**: 192.168.178.10
 - **Apple TV 4K**: 192.168.178.11
+- **PowerLine #4 (2. ZG)**: 192.168.178.4
 - **DHCP-Pool**: 192.168.178.20-250
 
 ### WLAN-Konfiguration
@@ -204,23 +214,30 @@ graph TB
 
 ### PowerLine-Konfiguration
 - **Verschlüsselung**: AES 128-Bit aktiviert
-- **Alle 3 Adapter**: Im gleichen PowerLine-Netzwerk
+- **Alle 5 Adapter**: Im gleichen PowerLine-Netzwerk
 - **Geschwindigkeit**: Bis zu 1.200 Mbit/s theoretisch
+- **Aufteilung**: 
+  - #1: Keller (Fritz!Box)
+  - #2: Erdgeschoss (Fritz!Repeater)
+  - #3: Erdgeschoss (TV-Geräte)
+  - #4: 2. Zwischengeschoss (Büro)
+  - #5: Reserve
 
 ## Zusätzlich benötigte Komponenten
 
-⚠️ **Wichtig**: Für diese Konfiguration benötigen Sie zusätzlich:
-- **1x LAN-Switch** (mindestens 4 Ports) für das Erdgeschoss
+✅ **Keine zusätzlichen Komponenten nötig!**
 - **LAN-Kabel** für alle Verbindungen
+
+💡 **Optimal genutzt**: Separater PowerLine-Adapter für TV-Geräte sorgt für beste Performance, beide TV-Geräte per LAN.
 
 ## Abdeckung pro Stockwerk
 
 | Stockwerk | Netzwerk-Typ | Gerät | Abdeckung |
 |-----------|--------------|-------|-----------|
-| Kellergeschoss | LAN only | Fritz!Box 5590 | Nur LAN-Ports |
-| Erdgeschoss | WiFi + LAN | Fritz!Repeater 6000 + Switch | Vollständige Abdeckung |
+| Kellergeschoss | LAN only | Fritz!Box 5590 + PowerLine #1 | Nur LAN-Ports |
+| Erdgeschoss | WiFi + LAN | Fritz!Repeater 6000 + PowerLine #2/#3 | Vollständige Abdeckung |
 | 1. Obergeschoss | WiFi Mesh | Fritz!Repeater (vorh.) | Vollständige Abdeckung |
-| 2. Zwischengeschoss | LAN | Fritz!Powerline 1220 #3 | Büro/Gästezimmer |
+| 2. Zwischengeschoss | LAN | Fritz!Powerline 1220 #4 | Büro/Gästezimmer |
 | Andere Stockwerke | WiFi | Via Mesh-Ausstrahlung | Begrenzte Abdeckung |
 
 ## Wichtige Anforderungen (Status)
@@ -231,7 +248,7 @@ graph TB
 
 ✅ **Fritz!Repeater 6000 als Access Point konfiguriert**
 
-✅ **SmartTV und Apple TV per LAN eingebunden**
+✅ **SmartTV und Apple TV per separaten PowerLine-Adapter (LAN)**
 
 ✅ **Büro-Fritz!Repeater per WiFi Mesh verbunden**
 
@@ -239,18 +256,21 @@ graph TB
 
 ## Vorteile dieser Lösung
 
-- **Stabile Backbone-Verbindung**: PowerLine zwischen Keller und Erdgeschoss
-- **Optimale Entertainment-Qualität**: LAN für TV-Geräte
+- **Stabile Backbone-Verbindung**: PowerLine zwischen allen Stockwerken
+- **Optimale Entertainment-Qualität**: Beide TV-Geräte per dediziertem LAN-Adapter
 - **Mesh-Abdeckung**: Nahtloses WiFi in bewohnten Bereichen
 - **Büro-Anbindung**: Sowohl WiFi (1. OG) als auch LAN (2. ZG)
 - **Energieeffizient**: Kein unnötiges WiFi im Keller
+- **Maximale Flexibilität**: 5 PowerLine-Adapter für alle Anforderungen
+- **Zukunftssicher**: Reserve-Adapter für weitere Erweiterungen
 
 ## Erweiterungsmöglichkeiten
 
+- **PowerLine #5**: Garage, Garten, Dachboden oder weiteres Stockwerk
 - **Weitere Stockwerke**: Zusätzliche Mesh-Repeater
-- **Mehr LAN-Ports**: Weitere Switches an PowerLine-Adaptern
+- **Mehr LAN-Ports**: Switches an PowerLine-Adaptern
 - **Professionelle Arbeitsplätze**: Zusätzliche LAN-Verkabelung
-- **Garten/Terrasse**: Outdoor-WiFi-Erweiterung
+- **Garten/Terrasse**: Outdoor-WiFi-Erweiterung mit PowerLine #5
 
 ## Troubleshooting
 
